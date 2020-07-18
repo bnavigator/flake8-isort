@@ -1,27 +1,12 @@
 dist: xenial
 language: python
 python:
-  - '2.7'
-  - '3.5'
   - '3.6'
   - '3.7'
   - '3.8'
-  - 'pypy'
   - 'pypy3'
-env:
-  - ISORT_VER="4"
-  - ISORT_VER="5"
-jobs:
-  exclude:
-    - python: "2.7"
-      env: ISORT_VER="5"
-    - python: "3.5"
-      env: ISORT_VER="5"
-    - python: "pypy"
-      env: ISORT_VER="5"
 cache: pip
 install:
-  - if [[ $ISORT_VER == "4" ]]; then pip install 'isort < 5'; fi
   - pip install .[test]
 script:
   - flake8 *.py

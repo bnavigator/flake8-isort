@@ -47,7 +47,7 @@ Error codes
 
 Requirements
 ------------
-- Python 2.7, 3.5, 3.6, pypy or pypy3
+- Python >=3.6 or pypy3
 - flake8
 - isort
 
