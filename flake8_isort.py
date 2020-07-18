@@ -5,7 +5,6 @@ import isort
 
 if hasattr(isort, 'api'):  # isort 5
     from contextlib import redirect_stdout
-    from difflib import unified_diff
     from io import StringIO
     from pathlib import Path
 
@@ -207,6 +206,7 @@ class Flake8Isort5(Flake8IsortBase):
                 isort_changed = isort.api.sort_stream(
                     input_stream=input_stream,
                     output_stream=output_stream,
+                    show_diff=True,
                     config=isort_config,
                     file_path=file_path)
         except isort.exceptions.FileSkipped:
@@ -214,12 +214,7 @@ class Flake8Isort5(Flake8IsortBase):
         except isort.exceptions.ISortError as e:
             warnings.warn(e)
         if isort_changed:
-            outlines = output_stream.getvalue()
-            diff_delta = "".join(unified_diff(
-                              input_string.splitlines(keepends=True),
-                              outlines.splitlines(keepends=True),
-                              fromfile="{}:before".format(self.filename),
-                              tofile="{}:after".format(self.filename)))
+            diff_delta = output_stream.getvalue()
             traceback = (isort_stdout.getvalue() + "\n" + diff_delta)
             for line_num, message in self.isort_linenum_msg(diff_delta):
                 if self.show_traceback:
